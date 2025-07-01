@@ -19,3 +19,4 @@ Receipt	Cash/Bank	➖ What they owe
 Payment	Cash/Bank	➖ What you owe
 Income	(ignored)	❌
 Expense	(ignored)	❌
+Lets start dbkhata3

@@ -12,14 +12,14 @@
             </div>
 
             <ul class="nav col-md-4 justify-content-center justify-content-md-end">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Privacy Policy</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Terms of Use</a></li>
+                <li class="nav-item"><a href="<?= BASE_URL ?>/pages/privacy_policy.php" class="nav-link px-2 text-light">Privacy Policy</a></li>
+                <li class="nav-item"><a href="<?= BASE_URL ?>/pages/terms.php" class="nav-link px-2 text-light">Terms of Use</a></li>
             </ul>
         </div>
     </div>
 </footer>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

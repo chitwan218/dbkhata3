@@ -117,7 +117,9 @@ include __DIR__ . '/../includes/header.php';
                         <td>
                             <a href="<?= BASE_URL ?>/parties/profile.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-primary">View</a>
                             <a href="<?= BASE_URL ?>/parties/edit.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-secondary">Edit</a>
-                            <a href="<?= BASE_URL ?>/parties/delete.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this party and all their transactions? This cannot be undone.');">Delete</a>
+                            <?php if (isAdmin()): ?>
+                                <a href="<?= BASE_URL ?>/parties/delete.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this party and all their transactions? This cannot be undone.');">Delete</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

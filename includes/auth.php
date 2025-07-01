@@ -1,11 +1,8 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/**
- * Redirects user to login page if not logged in
- */
 function requireLogin() {
     if (!isset($_SESSION['user'])) {
         header('Location: ' . BASE_URL . '/auth/login.php');
@@ -13,26 +10,21 @@ function requireLogin() {
     }
 }
 
-/**
- * Returns true if a user is logged in
- */
-function isLoggedIn() {
-    return isset($_SESSION['user']);
+function getUserRole() {
+    return $_SESSION['user']['role'] ?? null;
 }
 
-/**
- * Returns true if the logged-in user is an admin
- */
-function isAdmin() {
-    return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin';
+function hasRole($role) {
+    return getUserRole() === $role;
 }
 
-/**
- * Redirects non-admins to dashboard
- */
-function requireAdmin() {
-    if (!isAdmin()) {
+function requireRole($role) {
+    if (!hasRole($role)) {
         header('Location: ' . BASE_URL . '/dashboard.php');
         exit;
     }
+}
+
+function isAdmin() {
+    return hasRole('admin');
 }
