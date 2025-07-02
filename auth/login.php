@@ -1,6 +1,6 @@
 <?php
 require_once '../config/config.php';
-require_once '../includes/Database.php';
+require_once '../includes/database.php';
 session_start();
 
 $db = new Database();

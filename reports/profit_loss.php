@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../includes/Database.php';
+require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 requireLogin();
@@ -11,28 +11,30 @@ function getProfitLoss($db, $start_date, $end_date) {
     $sql = "
         SELECT
             IFNULL(SUM(CASE
-                WHEN type = 'receipt' AND payment_mode IN ('cash', 'bank') THEN amount
-                WHEN type = 'income' THEN amount
+                WHEN type IN ('receipt', 'income') THEN amount
+                WHEN type = 'sale' AND payment_mode IN ('cash', 'bank') THEN amount
                 ELSE 0
             END), 0) AS cash_in,
 
             IFNULL(SUM(CASE
-                WHEN type = 'payment' AND payment_mode IN ('cash', 'bank') THEN amount
-                WHEN type = 'expense' THEN amount
+                WHEN type IN ('payment', 'expense') THEN amount
+                WHEN type = 'purchase' AND payment_mode IN ('cash', 'bank') THEN amount
                 ELSE 0
             END), 0) AS cash_out,
 
-            (IFNULL(SUM(CASE
-                WHEN type = 'receipt' AND payment_mode IN ('cash', 'bank') THEN amount
-                WHEN type = 'income' THEN amount
-                ELSE 0
-            END), 0)
-            -
-            IFNULL(SUM(CASE
-                WHEN type = 'payment' AND payment_mode IN ('cash', 'bank') THEN amount
-                WHEN type = 'expense' THEN amount
-                ELSE 0
-            END), 0)) AS profit_loss
+            (
+                IFNULL(SUM(CASE
+                    WHEN type IN ('receipt', 'income') THEN amount
+                    WHEN type = 'sale' AND payment_mode IN ('cash', 'bank') THEN amount
+                    ELSE 0
+                END), 0)
+                -
+                IFNULL(SUM(CASE
+                    WHEN type IN ('payment', 'expense') THEN amount
+                    WHEN type = 'purchase' AND payment_mode IN ('cash', 'bank') THEN amount
+                    ELSE 0
+                END), 0)
+            ) AS profit_loss
         FROM transactions
         WHERE date BETWEEN :start_date AND :end_date
     ";
@@ -63,7 +65,6 @@ $customStart = $_GET['custom_start'] ?? '';
 $customEnd = $_GET['custom_end'] ?? '';
 
 if ($customStart && $customEnd) {
-    // Validate dates
     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $customStart) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $customEnd)) {
         $customPL = getProfitLoss($db, $customStart, $customEnd);
     }
@@ -131,7 +132,7 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <!-- Custom date range form -->
+    <!-- Custom Date Range -->
     <div class="card shadow-sm p-4">
         <h4 class="mb-3">Custom Date Range Profit & Loss</h4>
         <form method="get" class="row g-3 align-items-end">

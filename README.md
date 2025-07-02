@@ -20,3 +20,11 @@ Payment	Cash/Bank	➖ What you owe
 Income	(ignored)	❌
 Expense	(ignored)	❌
 Lets start dbkhata3
+
+Cash in/Cash out logic
+Cash In = receipt, income
+cash In = sale in cash/bank (but not for credit)
+Cash Out = payment, expense
+Cash out = Purchase in cash/bank (but not for credit)
+
+

@@ -37,7 +37,7 @@ define('DB_HOST', '$host');
 define('DB_NAME', '$dbname');
 define('DB_USER', '$user');
 define('DB_PASS', '$pass');
-define('BASE_URL', 'http://localhost/dvkhata3'); // Change if hosted elsewhere
+define('BASE_URL', 'http://localhost/dbkhata3'); // Change if hosted elsewhere
 ";
 
         if (!file_put_contents(__DIR__ . '/config/config.php', $config)) {

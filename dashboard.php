@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/Database.php';
+require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/auth.php';
 
 requireLogin();
@@ -9,10 +9,17 @@ $db = new Database();
 function getProfitLoss($db, $start_date, $end_date) {
     $db->query("
         SELECT
-            IFNULL(SUM(CASE WHEN type = 'receipt' AND payment_mode IN ('cash', 'bank') THEN amount
-                            WHEN type = 'income' THEN amount ELSE 0 END), 0) AS cash_in,
-            IFNULL(SUM(CASE WHEN type = 'payment' AND payment_mode IN ('cash', 'bank') THEN amount
-                            WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS cash_out
+            IFNULL(SUM(CASE 
+                WHEN type IN ('receipt', 'income') THEN amount
+                WHEN type = 'sale' AND payment_mode IN ('cash', 'bank') THEN amount
+                ELSE 0 
+            END), 0) AS cash_in,
+
+            IFNULL(SUM(CASE 
+                WHEN type IN ('payment', 'expense') THEN amount
+                WHEN type = 'purchase' AND payment_mode IN ('cash', 'bank') THEN amount
+                ELSE 0 
+            END), 0) AS cash_out
         FROM transactions
         WHERE date BETWEEN :start_date AND :end_date
     ");
